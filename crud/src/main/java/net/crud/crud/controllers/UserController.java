@@ -22,12 +22,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User post (@RequestParam String userS, @RequestParam List<MultipartFile> arquivos) throws IOException {
-//        try {
-            return userService.create(userS, arquivos);
-//        }catch(Exception e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-//        }
+    public ResponseEntity<?> post (@RequestParam String userS, @RequestParam List<MultipartFile> arquivos) throws IOException {
+        try {
+            return new ResponseEntity<>(userService.create(userS, arquivos), HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("/{id}")
