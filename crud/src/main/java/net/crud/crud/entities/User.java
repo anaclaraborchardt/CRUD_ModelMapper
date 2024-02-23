@@ -1,9 +1,11 @@
 package net.crud.crud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.crud.crud.security.UsuarioDetailsEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,22 +21,16 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+//    private String name;
     private String email;
-    private String password;
+//    private String password;
     private Integer age;
-    private String status;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Arquivo> arquivos;
+//    private String status;
+//    private boolean enabled;
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Arquivo> arquivos;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private UsuarioDetailsEntity usuarioDetailsEntity;
 
-    public void setArquivos(List<MultipartFile> arquivos) throws IOException {
-        for(MultipartFile arquivoFor : arquivos){
-            Arquivo arquivo = new Arquivo();
-            arquivo.setName(arquivoFor.getOriginalFilename());
-            arquivo.setTipo(arquivoFor.getContentType());
-            arquivo.setDados(arquivoFor.getBytes());
-            this.arquivos.add(arquivo);
-        }
-
-    }
 }

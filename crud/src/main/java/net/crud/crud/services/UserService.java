@@ -49,17 +49,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void editPassword(EditPasswordDTO editPasswordDTO){
-        User user = getOne(editPasswordDTO.getId());
-        user.setPassword(editPasswordDTO.getPassword());
-        userRepository.save(user);
-    }
+//    public void editPassword(EditPasswordDTO editPasswordDTO){
+//        User user = getOne(editPasswordDTO.getId());
+//        user.setPassword(editPasswordDTO.getPassword());
+//        userRepository.save(user);
+//    }
 
-    public void editStatus(EditStatusDTO editStatusDTO){
-        User user = getOne(editStatusDTO.getId());
-        user.setStatus(editStatusDTO.getStatus());
-        userRepository.save(user);
-    }
+//    public void editStatus(EditStatusDTO editStatusDTO){
+//        User user = getOne(editStatusDTO.getId());
+//        user.setStatus(editStatusDTO.getStatus());
+//        userRepository.save(user);
+//    }
 
     public void remove(Long id){
         userRepository.deleteById(id);

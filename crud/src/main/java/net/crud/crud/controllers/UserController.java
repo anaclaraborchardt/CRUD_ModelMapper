@@ -5,6 +5,7 @@ import net.crud.crud.entities.DTOs.EditPasswordDTO;
 import net.crud.crud.entities.DTOs.EditStatusDTO;
 import net.crud.crud.entities.DTOs.UserEditDTO;
 import net.crud.crud.entities.User;
+import net.crud.crud.repositories.UserRepository;
 import net.crud.crud.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping
     public ResponseEntity<?> post (@RequestParam String userS, @RequestParam List<MultipartFile> arquivos) throws IOException {
@@ -48,25 +50,25 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/password")
-    public ResponseEntity<?> editPassword (@RequestBody EditPasswordDTO editPasswordDTO){
-        try {
-            userService.editPassword(editPasswordDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
+//    @PatchMapping("/password")
+//    public ResponseEntity<?> editPassword (@RequestBody EditPasswordDTO editPasswordDTO){
+//        try {
+//            userService.editPassword(editPasswordDTO);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }catch(Exception e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
 
-    @PatchMapping("/status")
-    public ResponseEntity<?> editStatus (@RequestBody EditStatusDTO editStatusDTO){
-        try {
-            userService.editStatus(editStatusDTO);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        }
-    }
+//    @PatchMapping("/status")
+//    public ResponseEntity<?> editStatus (@RequestBody EditStatusDTO editStatusDTO){
+//        try {
+//            userService.editStatus(editStatusDTO);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        }catch(Exception e){
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+//        }
+//    }
 
     @PutMapping
     public ResponseEntity<?> update (@RequestBody UserEditDTO userEditDTO){
