@@ -25,7 +25,6 @@ public class UsuarioDetailsEntity implements UserDetails {
     private String password;
 
     @Column(unique = true, nullable = false, updatable = false)
-    @Email
     private String username;
 
     private boolean enabled;

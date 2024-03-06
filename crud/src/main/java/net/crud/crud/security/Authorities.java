@@ -23,8 +23,9 @@ public enum Authorities implements GrantedAuthority {
     public static Authorities getAuthorities(String name){
         return valueOf(name.toUpperCase());
     }
+
     @Override
     public String getAuthority() {
-        return nome;
+        return name();
     }
 }

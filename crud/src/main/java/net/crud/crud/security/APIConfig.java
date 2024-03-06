@@ -27,15 +27,20 @@ public class APIConfig {
         //quando o csrf estiver habilitado, ele vai gerar um token,
         // vai retornar esse token e deve ser enviado junto em formulários
         // para o backEnd - isso é necessário em requisições: post, patch, delete...
-        //
+
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
-                        .requestMatchers(HttpMethod.GET, "/teste").permitAll()
+                        //requstMatchers são especificações que não entram na análise do anyRequest()
+                        //O anyRequest() afirma que precisa estar autenticado, mas não se aplica às rotas
+                        //previamente definidas
+                        .requestMatchers(HttpMethod.GET, "/teste").hasAuthority(Authorities.GET.getAuthority())
                         .requestMatchers(HttpMethod.GET, "/teste/users").permitAll()
                 .anyRequest().authenticated());
         httpSecurity.securityContext((context) -> context.securityContextRepository(securityContextRepository));
-        httpSecurity.formLogin(Customizer.withDefaults());
+        httpSecurity.formLogin(httpSecurityFormLoginConfigurer ->
+                httpSecurityFormLoginConfigurer.successHandler((request, response, authentication) ->
+                        response.sendRedirect("/teste")));
         httpSecurity.logout(Customizer.withDefaults());
         return httpSecurity.build();
     }

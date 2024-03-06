@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import net.crud.crud.entities.User;
 import net.crud.crud.repositories.UserRepository;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class DataBaseConfig {
     @PostConstruct
     public void init(){
         User user = new User();
-        user.setEmail("teste@teste");
+        user.setEmail("teste@teste.com");
         //builder age como construtor
         user.setUsuarioDetailsEntity(
                 UsuarioDetailsEntity.builder()
@@ -26,8 +27,8 @@ public class DataBaseConfig {
                         .accountNonExpired(true)
                         .accountNonLocked(true)
                         .credentialsNonExpired(true)
-                        .username("anaclara@teste.com")
-                        .password("ananaa")
+                        .username("ana4")
+                        .password(new BCryptPasswordEncoder().encode("123ana"))
                         .authorities(List.of(Authorities.GET, Authorities.POST))
                         .build());
 
