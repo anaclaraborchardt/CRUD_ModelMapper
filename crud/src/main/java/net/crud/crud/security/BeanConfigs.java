@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
@@ -16,7 +15,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 @AllArgsConstructor
 public class BeanConfigs {
 
-    private final AutenticacaoService autenticacaoService;
+    private final AuthenticationService autenticacaoService;
 
     //se o autenticacaoService for criado depois do BeanConfig, deve ser passado como parâmetro
 //    @Autowired

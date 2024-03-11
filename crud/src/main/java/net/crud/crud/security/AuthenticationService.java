@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class AutenticacaoService implements UserDetailsService {
+public class AuthenticationService implements UserDetailsService {
 
     private final UserRepository userRepository;
 

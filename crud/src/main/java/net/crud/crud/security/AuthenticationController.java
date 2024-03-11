@@ -1,9 +1,9 @@
 package net.crud.crud.security;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import net.crud.crud.entities.UserLogin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
+//    private final SecurityContextRepository securityContextRepository;
+    private final CookieUtil cookieUtil = new CookieUtil();
 
     @PostMapping("/login")
     ResponseEntity<String> authenticate(@RequestBody UserLogin userLogin,
@@ -36,15 +38,24 @@ public class AuthenticationController {
                     (userLogin.getUsername(), userLogin.getPassword());
 
             //authManager sends the token to authentication
-            //if the object is authenticated it'll be saved into context
+            //if the object is authenticated it'll be saved into context or generate a cookie
             Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            //se ele conseguir se autenticar, não é mais username, mas sim userDetails
 
             //the following code keep the user data saved
             //create a new context if the user is authenticated
             //it is needed to keep the authenticated user in the system
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            context.setAuthentication(authentication);
-            securityContextRepository.saveContext(context, httpServletRequest, httpServletResponse);
+//            SecurityContext context = SecurityContextHolder.createEmptyContext();
+//            context.setAuthentication(authentication);
+//            securityContextRepository.saveContext(context, httpServletRequest, httpServletResponse);
+
+            //gera um cookie através da classe cookieUtil e armazena na resposta
+            //o navegador vai armazenar esse cookie
+            //criação de um token e retorno para o usuário a partir do momento em que ele está autenticado
+            UserDetails user = (UserDetails) authentication.getPrincipal();
+            Cookie cookie = cookieUtil.cookieGeneratorJwt(user);
+            httpServletResponse.addCookie(cookie);
+
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("ok");
         } catch(AuthenticationException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("não");

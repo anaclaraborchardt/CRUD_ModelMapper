@@ -31,7 +31,7 @@ public class APIConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(authorizeRequest ->
                 authorizeRequest
-                        //requstMatchers são especificações que não entram na análise do anyRequest()
+                        //requestMatchers são especificações que não entram na análise do anyRequest()
                         //O anyRequest() afirma que precisa estar autenticado, mas não se aplica às rotas
                         //previamente definidas
                         .requestMatchers(HttpMethod.GET, "/teste").hasAuthority(Authorities.GET.getAuthority())
