@@ -27,7 +27,7 @@ public class AuthenticationController {
 //    private final SecurityContextRepository securityContextRepository;
     private final CookieUtil cookieUtil = new CookieUtil();
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     ResponseEntity<String> authenticate(@RequestBody UserLogin userLogin,
                                        HttpServletRequest httpServletRequest,
                                        HttpServletResponse httpServletResponse){

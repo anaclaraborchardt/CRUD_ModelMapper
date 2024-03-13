@@ -10,6 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
@@ -36,7 +41,7 @@ public class BeanConfigs {
     public AuthenticationManager authenticationManager()
             throws Exception {
         DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
-//        dao.setPasswordEncoder(new BCryptPasswordEncoder());
+        dao.setPasswordEncoder(new BCryptPasswordEncoder());
         dao.setUserDetailsService(autenticacaoService);
         return new ProviderManager(dao);
 //        return configuration.getAuthenticationManager();
@@ -51,4 +56,23 @@ public class BeanConfigs {
 //    public UserDetailsService userDetailsService(AutenticacaoService autenticacaoService){
 //        return autenticacaoService;
 //    }
+
+    @Bean
+    public CorsConfigurationSource corsConfig(){
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(List.of("http://localhost:3000"));
+        cors.setAllowedMethods(List.of("POST", "GET"));
+        //allow taking the client cookies
+        cors.setAllowCredentials(true);
+        //headers of the requests, with "*" means that can be any header
+        cors.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource corsConfigurationSource =
+                new UrlBasedCorsConfigurationSource();
+        //registering the personalization of settings
+        //"/**" = all paths are allowed - define visibility of cookies
+        corsConfigurationSource.registerCorsConfiguration("/**", cors);
+
+        return corsConfigurationSource;
+
+    }
 }

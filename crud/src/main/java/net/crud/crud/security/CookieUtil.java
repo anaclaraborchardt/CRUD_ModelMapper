@@ -10,6 +10,7 @@ public class CookieUtil {
 
     public Cookie cookieGeneratorJwt(UserDetails userDetails){
         String token = new JwtUtil().generateToken(userDetails);
+        System.out.println(token);
         Cookie cookie = new Cookie("JWT", token);
         cookie.setPath("/");
         //depois do tempo passado, o cookie é removido automaticamente

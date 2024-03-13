@@ -8,7 +8,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.util.List;
@@ -17,7 +19,8 @@ import java.util.List;
 @AllArgsConstructor
 public class APIConfig {
 
-    private final SecurityContextRepository securityContextRepository;
+//    private final SecurityContextRepository securityContextRepository;
+    private final AuthenticationFilter authenticationFilter;
 
     //hasAuthority - uma autorização
     //hasAnyAuthority: possui mais de uma autorização
@@ -34,13 +37,20 @@ public class APIConfig {
                         //requestMatchers são especificações que não entram na análise do anyRequest()
                         //O anyRequest() afirma que precisa estar autenticado, mas não se aplica às rotas
                         //previamente definidas
-                        .requestMatchers(HttpMethod.GET, "/teste").hasAuthority(Authorities.GET.getAuthority())
+                        .requestMatchers(HttpMethod.GET, "/teste").permitAll()
                         .requestMatchers(HttpMethod.GET, "/teste/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .anyRequest().authenticated());
-        httpSecurity.securityContext((context) -> context.securityContextRepository(securityContextRepository));
-        httpSecurity.formLogin(httpSecurityFormLoginConfigurer ->
-                httpSecurityFormLoginConfigurer.successHandler((request, response, authentication) ->
-                        response.sendRedirect("/teste")));
+
+        httpSecurity.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+//        httpSecurity.securityContext((context) -> context.securityContextRepository(securityContextRepository));
+
+//        httpSecurity.formLogin(httpSecurityFormLoginConfigurer ->
+//                httpSecurityFormLoginConfigurer.successHandler((request, response, authentication) ->
+//                        response.sendRedirect("/teste")));
+        httpSecurity.formLogin(AbstractHttpConfigurer::disable);
         httpSecurity.logout(Customizer.withDefaults());
         return httpSecurity.build();
     }

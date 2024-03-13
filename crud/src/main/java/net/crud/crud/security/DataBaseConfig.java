@@ -28,7 +28,7 @@ public class DataBaseConfig {
                         .accountNonLocked(true)
                         .credentialsNonExpired(true)
                         .username("ana4")
-                        .password(new BCryptPasswordEncoder().encode("123ana"))
+                        .password(new BCryptPasswordEncoder().encode("senha123"))
                         .authorities(List.of(Authorities.GET, Authorities.POST))
                         .build());
 

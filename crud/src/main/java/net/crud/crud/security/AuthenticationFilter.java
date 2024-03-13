@@ -33,28 +33,32 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal
             (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        //search the token and validate it
-        Cookie cookie = cookieUtil.getCookie(request, "JWT");
-        String token = cookie.getValue();
-        String username = jwtUtil.getUsername(token);
 
-        //create an authenticated user
-        UserDetails user = userDetailsService.loadUserByUsername(username);
-        Authentication auth =
-                new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        if(!publicRoute(request)) {
+            //search the token and validate it
+            Cookie cookie = cookieUtil.getCookie(request, "JWT");
+            String token = cookie.getValue();
+            String username = jwtUtil.getUsername(token);
+            System.out.println(token);
 
-        //save the authenticated user in securityContext
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(auth);
-        securityContextRepository.saveContext(context, request, response);
+            //create an authenticated user
+            UserDetails user = userDetailsService.loadUserByUsername(username);
+            Authentication auth =
+                    new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
 
-        //Continuation of the request
+            //save the authenticated user in securityContext
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(auth);
+            securityContextRepository.saveContext(context, request, response);
+
+            //Continuation of the request
+        }
         filterChain.doFilter(request,response);
     }
 
     //Verifies if the user needs to be authenticated
     private boolean publicRoute(HttpServletRequest request){
-        return request.getRequestURI().equals("/login") &&
+        return request.getRequestURI().equals("/auth/login") &&
                 request.getMethod().equals("POST");
     }
 }
