@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+//component - implements a logic in each request of the filter
 @Component
 @AllArgsConstructor
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -36,7 +37,13 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         if(!publicRoute(request)) {
             //search the token and validate it
-            Cookie cookie = cookieUtil.getCookie(request, "JWT");
+            Cookie cookie;
+            try {
+                cookie = cookieUtil.getCookie(request, "JWT");
+            } catch (Exception e) {
+                response.setStatus(401);
+                return;
+            }
             String token = cookie.getValue();
             String username = jwtUtil.getUsername(token);
             System.out.println(token);
@@ -51,7 +58,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             context.setAuthentication(auth);
             securityContextRepository.saveContext(context, request, response);
 
-            //Continuation of the request
+            //Renovation of JWT and cookie
+            Cookie renovatedCookie = cookieUtil.cookieGeneratorJwt(user);
+            response.addCookie(renovatedCookie);
         }
         filterChain.doFilter(request,response);
     }

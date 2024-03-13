@@ -1,51 +1,27 @@
 package net.crud.crud.security;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@AllArgsConstructor
 public class JwtUtil {
 
-    private final SecretKey key;
-
-    public JwtUtil(){
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        String password = encoder.encode("senha123");
-        this.key = Keys.hmacShaKeyFor(password.getBytes());
-    }
-
     public String generateToken(UserDetails userDetails){
+        Algorithm algorithm = Algorithm.HMAC256("senha123");
 
-        return Jwts.builder()
-                .issuer("WEG")
-                .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + 300000))
-                .signWith(this.key, Jwts.SIG.HS256)
-                .subject(userDetails.getUsername())
-                //esse compact faz retornar uma string
-                .compact();
+        return JWT.create()
+                .withIssuer("WEG")
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(new Date().getTime() + 300))
+                .withSubject(userDetails.getUsername())
+                .sign(algorithm);
     }
 
-    private Jws<Claims> tokenValidation(String token){
-        return getParser().parseSignedClaims(token);
-    }
-
-    private JwtParser getParser(){
-        return Jwts.parser()
-                .verifyWith(this.key)
-                .build();
-    }
 
     public String getUsername(String token){
-        return tokenValidation(token)
-                .getPayload()
-                .getSubject();
+        return JWT.decode(token).getSubject();
     }
 }

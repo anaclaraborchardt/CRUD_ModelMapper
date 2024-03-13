@@ -15,11 +15,12 @@ import org.springframework.security.web.context.SecurityContextRepository;
 
 import java.util.List;
 
+//configuration is for define settings for something
 @Configuration
 @AllArgsConstructor
 public class APIConfig {
 
-//    private final SecurityContextRepository securityContextRepository;
+    private final SecurityContextRepository securityContextRepository;
     private final AuthenticationFilter authenticationFilter;
 
     //hasAuthority - uma autorização
@@ -37,7 +38,7 @@ public class APIConfig {
                         //requestMatchers são especificações que não entram na análise do anyRequest()
                         //O anyRequest() afirma que precisa estar autenticado, mas não se aplica às rotas
                         //previamente definidas
-                        .requestMatchers(HttpMethod.GET, "/teste").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/teste").hasAuthority("GET")
                         .requestMatchers(HttpMethod.GET, "/teste/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .anyRequest().authenticated());
@@ -45,13 +46,13 @@ public class APIConfig {
         httpSecurity.sessionManagement(config -> config.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-//        httpSecurity.securityContext((context) -> context.securityContextRepository(securityContextRepository));
+        httpSecurity.securityContext((context) -> context.securityContextRepository(securityContextRepository));
 
 //        httpSecurity.formLogin(httpSecurityFormLoginConfigurer ->
 //                httpSecurityFormLoginConfigurer.successHandler((request, response, authentication) ->
 //                        response.sendRedirect("/teste")));
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
-        httpSecurity.logout(Customizer.withDefaults());
+        httpSecurity.logout(AbstractHttpConfigurer::disable);
         return httpSecurity.build();
     }
 

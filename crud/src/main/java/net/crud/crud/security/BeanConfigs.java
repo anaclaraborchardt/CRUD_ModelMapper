@@ -22,19 +22,6 @@ public class BeanConfigs {
 
     private final AuthenticationService autenticacaoService;
 
-    //se o autenticacaoService for criado depois do BeanConfig, deve ser passado como parâmetro
-//    @Autowired
-//    public void config(AuthenticationManagerBuilder auth,
-//                       AutenticacaoService autenticacaoService) throws Exception {
-//        auth.userDetailsService(autenticacaoService)
-//                .passwordEncoder(passwordEncoder());
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-
     //quando ele ver que foi necessário um authenticationManager ou um securityContext, ele vai chamar esses dois métodos
     //pode ser passada uma lista de daos no retorno do ProviderManager
     @Bean
@@ -44,7 +31,6 @@ public class BeanConfigs {
         dao.setPasswordEncoder(new BCryptPasswordEncoder());
         dao.setUserDetailsService(autenticacaoService);
         return new ProviderManager(dao);
-//        return configuration.getAuthenticationManager();
     }
 
     @Bean
@@ -52,10 +38,6 @@ public class BeanConfigs {
         return new HttpSessionSecurityContextRepository();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService(AutenticacaoService autenticacaoService){
-//        return autenticacaoService;
-//    }
 
     @Bean
     public CorsConfigurationSource corsConfig(){

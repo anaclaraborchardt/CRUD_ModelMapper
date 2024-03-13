@@ -13,10 +13,10 @@ import org.springframework.security.core.GrantedAuthority;
 public enum Authorities implements GrantedAuthority {
 
 
-    GET("Get"),
-    POST("Post"),
-    PUT("Put"),
-    DELETE("Delete");
+    GET("GET"),
+    POST("POST"),
+    PUT("PUT"),
+    DELETE("DELETE");
 
     private final String nome;
 

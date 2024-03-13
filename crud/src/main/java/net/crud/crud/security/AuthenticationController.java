@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,6 @@ public class AuthenticationController {
 
     @PostMapping("/auth/login")
     ResponseEntity<String> authenticate(@RequestBody UserLogin userLogin,
-                                       HttpServletRequest httpServletRequest,
                                        HttpServletResponse httpServletResponse){
         try{
             //many classes implements authentication, like authenticationManager...
@@ -56,10 +56,23 @@ public class AuthenticationController {
             Cookie cookie = cookieUtil.cookieGeneratorJwt(user);
             httpServletResponse.addCookie(cookie);
 
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("ok");
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Requisição bem sucedida!");
         } catch(AuthenticationException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("não");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Erro na requisição");
         }
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        Cookie cookie = null;
+        try {
+            cookie = cookieUtil.getCookie(request, "JWT");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        } catch (Exception e) {
+            response.setStatus(401);
+        }
+
     }
 
 }
