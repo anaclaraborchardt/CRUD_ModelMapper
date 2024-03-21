@@ -1,4 +1,4 @@
-package net.crud.crud.entities;
+package net.crud.crud.models.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

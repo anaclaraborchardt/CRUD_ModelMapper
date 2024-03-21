@@ -1,14 +1,14 @@
-package net.crud.crud.entities;
+package net.crud.crud.models.DTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@Data
 @NoArgsConstructor
-public class UserLogin {
+@Data
+public class EditPasswordDTO {
 
-    private String username;
+    private Long id;
     private String password;
 }

@@ -1,4 +1,4 @@
-package net.crud.crud.security;
+package net.crud.crud.security.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;

@@ -1,7 +1,7 @@
-package net.crud.crud.security;
+package net.crud.crud.security.service;
 
 import lombok.AllArgsConstructor;
-import net.crud.crud.entities.User;
+import net.crud.crud.models.entities.User;
 import net.crud.crud.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

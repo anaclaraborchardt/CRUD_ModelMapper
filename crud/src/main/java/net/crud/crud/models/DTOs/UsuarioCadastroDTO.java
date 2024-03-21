@@ -1,10 +1,10 @@
-package net.crud.crud.entities.DTOs;
+package net.crud.crud.models.DTOs;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.crud.crud.entities.Arquivo;
+import net.crud.crud.models.entities.Arquivo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

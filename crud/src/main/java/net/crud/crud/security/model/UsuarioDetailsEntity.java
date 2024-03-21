@@ -1,9 +1,9 @@
-package net.crud.crud.security;
+package net.crud.crud.security.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.*;
-import net.crud.crud.entities.User;
+import net.crud.crud.models.entities.User;
+import net.crud.crud.security.model.Authorities;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 

@@ -1,10 +1,7 @@
 package net.crud.crud.controllers;
 
 import lombok.AllArgsConstructor;
-import net.crud.crud.entities.DTOs.EditPasswordDTO;
-import net.crud.crud.entities.DTOs.EditStatusDTO;
-import net.crud.crud.entities.DTOs.UserEditDTO;
-import net.crud.crud.entities.User;
+import net.crud.crud.models.DTOs.UserEditDTO;
 import net.crud.crud.repositories.UserRepository;
 import net.crud.crud.services.UserService;
 import org.springframework.http.HttpStatus;
